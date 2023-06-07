@@ -87,6 +87,11 @@ public class QLXBGT extends javax.swing.JFrame {
         });
 
         btnCapNhat.setText("Cập nhật");
+        btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhatActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xóa");
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
@@ -103,6 +108,11 @@ public class QLXBGT extends javax.swing.JFrame {
                 "STT", "Tên giáo trình", "Tác giả", "Ngày biên soạn", "Trạng thái xuất bản"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -143,6 +153,11 @@ public class QLXBGT extends javax.swing.JFrame {
         });
 
         btnTim.setText("Tìm");
+        btnTim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -277,7 +292,12 @@ public class QLXBGT extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Vui long chon vao dong muon xoa");
             }
         }
-        
+        txtNgayBienSoan.setText("");
+        txtTacGia.setText("");
+        txtTenGiaoTrinh.setText("");
+        txtTimKiem.setText("");
+        rdChuaXuatBan.setSelected(true);
+        txtTenGiaoTrinh.requestFocus();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -297,7 +317,8 @@ public class QLXBGT extends javax.swing.JFrame {
         txtTenGiaoTrinh.requestFocus();
         
     }//GEN-LAST:event_btnLamMoiActionPerformed
-
+    
+    // Hàm trả về giá trị của radio button
     private String getSelectedButton (){
         if (rdChuaXuatBan.isSelected()){
             return "Chua xuat ban";
@@ -335,6 +356,76 @@ public class QLXBGT extends javax.swing.JFrame {
             tableModel.setValueAt("Da xuat ban",  i, 4); 
         }       // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+       DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+       //Lay du lieu cua bang
+       String tblTen = tableModel.getValueAt(jTable1.getSelectedRow(), 1).toString();
+       String tblTacGia = tableModel.getValueAt(jTable1.getSelectedRow(), 2).toString();
+       String tblNgayBienSoan = tableModel.getValueAt(jTable1.getSelectedRow(), 3).toString();
+        String tblTrangThai = tableModel.getValueAt(jTable1.getSelectedRow(), 4).toString();
+       //Dua du lieu cua bang len textField
+       txtTenGiaoTrinh.setText(tblTen);
+       txtTacGia.setText(tblTacGia);
+       txtNgayBienSoan.setText(tblNgayBienSoan);
+       if(tblTrangThai.equals("Chua xuat ban")){
+           rdChuaXuatBan.setSelected(true);
+       }
+       else{
+           rdDaXuatBan.setSelected(true);
+       }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
+        DefaultTableModel tblModel = (DefaultTableModel) jTable1.getModel();
+        // neu 1 hang duoc chon thi se duoc update
+        if (jTable1.getSelectedRow()==1){
+            String tenGiaoTrinh = txtTenGiaoTrinh.getText();
+            String tacGia = txtTacGia.getText();
+            String ngayBienSoan = txtNgayBienSoan.getText();
+            
+            //cap nhat laij bang
+            tblModel.setValueAt(tenGiaoTrinh, jTable1.getSelectedRow(), 1);
+            tblModel.setValueAt(tacGia, jTable1.getSelectedRow(), 2);
+            tblModel.setValueAt(ngayBienSoan, jTable1.getSelectedRow(), 3);
+            tblModel.setValueAt(getSelectedButton(), jTable1.getSelectedRow(), 4);
+            JOptionPane.showMessageDialog(this , "Cap nhat thanh cong");
+        } else{
+            JOptionPane.showMessageDialog(this , "Bang rong");
+        }
+    }//GEN-LAST:event_btnCapNhatActionPerformed
+
+    private void btnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimActionPerformed
+        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+        int count = 0;
+        String timKiem = txtTimKiem.getText();
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            //so sanh neu tim kiem duoc thi lay gia tri cua bang
+          if (timKiem.equals(tableModel.getValueAt(i, 1))){
+              String tenGiaoTrinh = tableModel.getValueAt(i, 1).toString();
+              String tenTacGia = tableModel.getValueAt(i, 2).toString();
+              String ngayBienSoan = tableModel.getValueAt(i, 3).toString();
+              String trangThai = tableModel.getValueAt(i, 4).toString();
+              
+              txtTenGiaoTrinh.setText(tenGiaoTrinh);
+              txtTacGia.setText(tenTacGia);
+              txtNgayBienSoan.setText(ngayBienSoan);
+               if(trangThai.equals("Chua xuat ban")){
+           rdChuaXuatBan.setSelected(true);
+       }
+       else{
+           rdDaXuatBan.setSelected(true);
+           
+       }
+               JOptionPane.showMessageDialog(this, "Da tim thay giao trinh");
+               count++;
+               break;
+          }
+        }
+        if (count==0){
+            JOptionPane.showMessageDialog(this, "Khong tim thay giao trinh");
+        }
+    }//GEN-LAST:event_btnTimActionPerformed
 
     /**
      * @param args the command line arguments
