@@ -389,12 +389,20 @@ public class QLXBGT extends javax.swing.JFrame {
 
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
         DefaultTableModel tblModel = (DefaultTableModel) jTable1.getModel();
+        int count = 0;
         // neu 1 hang duoc chon thi se duoc update
         if (jTable1.getSelectedRowCount()==1 ){
             String tenGiaoTrinh = txtTenGiaoTrinh.getText();
             String tacGia = txtTacGia.getText();
             String ngayBienSoan = txtNgayBienSoan.getText();
-            
+            for (int i = 0; i < tblModel.getRowCount(); i++){
+                if (txtTenGiaoTrinh.getText().equals(tblModel.getValueAt(i, 1))){
+                    JOptionPane.showMessageDialog(this, "Giao trinh da ton tai");
+                    count++;
+                    break;
+                }
+            }
+            if (count == 0){
             //cap nhat laij bang
             tblModel.setValueAt(tenGiaoTrinh, jTable1.getSelectedRow(), 1);
             tblModel.setValueAt(tacGia, jTable1.getSelectedRow(), 2);
@@ -407,7 +415,8 @@ public class QLXBGT extends javax.swing.JFrame {
             }
             else{
                 JOptionPane.showMessageDialog(this, "Vui long chon 1 hang");
-            }
+                }
+            } 
         }
     }//GEN-LAST:event_btnCapNhatActionPerformed
 
