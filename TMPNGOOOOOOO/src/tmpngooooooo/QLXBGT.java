@@ -12,15 +12,17 @@ import javax.swing.table.DefaultTableModel;
  * @author lyhai
  */
 public class QLXBGT extends javax.swing.JFrame {
+    // Gán biến toàn cục cho STT
     private int x = 1;
     /**
      * Creates new form QLXBGT
      */
     public QLXBGT() {
         initComponents();
-        setLocationRelativeTo(null);
+        //Đưa màn hình ra giữa
+        setLocationRelativeTo(null);   
+        //set chọn cho radio button
         rdChuaXuatBan.setSelected(true);
-
     }
 
     /**
@@ -51,7 +53,7 @@ public class QLXBGT extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         rdChuaXuatBan = new javax.swing.JRadioButton();
         rdDaXuatBan = new javax.swing.JRadioButton();
-        jButton4 = new javax.swing.JButton();
+        btnXuatBan = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         btnLamMoi = new javax.swing.JButton();
@@ -129,10 +131,10 @@ public class QLXBGT extends javax.swing.JFrame {
         buttonGroup1.add(rdDaXuatBan);
         rdDaXuatBan.setText("Đã xuất bản");
 
-        jButton4.setText("Xuất bản toàn bộ");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnXuatBan.setText("Xuất bản toàn bộ");
+        btnXuatBan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnXuatBanActionPerformed(evt);
             }
         });
 
@@ -199,7 +201,7 @@ public class QLXBGT extends javax.swing.JFrame {
                                 .addGap(45, 45, 45)
                                 .addComponent(jButton5)
                                 .addGap(39, 39, 39)
-                                .addComponent(jButton4))))
+                                .addComponent(btnXuatBan))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -259,7 +261,7 @@ public class QLXBGT extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
+                    .addComponent(btnXuatBan)
                     .addComponent(jButton5)
                     .addComponent(jButton6))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -274,13 +276,14 @@ public class QLXBGT extends javax.swing.JFrame {
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
-        //Xoa dong
+        //Nếu đếm được số  dòng chọn là 1
         if (jTable1.getSelectedRowCount() == 1){
+            //Xóa dòng chọn đó
             tableModel.removeRow(jTable1.getSelectedRow());
             //Cap nhat lai STT trong bang
             for (int i = 0; i < tableModel.getRowCount(); i++) {
             tableModel.setValueAt(i + 1, i, 0); // 0 là cột STT
-        }
+            }
         }
         else{
             // Neu bang rong thi thong bao
@@ -297,6 +300,7 @@ public class QLXBGT extends javax.swing.JFrame {
         txtTenGiaoTrinh.setText("");
         txtTimKiem.setText("");
         rdChuaXuatBan.setSelected(true);
+        //Trả con trỏ về tên giáo trình
         txtTenGiaoTrinh.requestFocus();
     }//GEN-LAST:event_btnXoaActionPerformed
 
@@ -309,16 +313,16 @@ public class QLXBGT extends javax.swing.JFrame {
     }//GEN-LAST:event_rdChuaXuatBanActionPerformed
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
+        //Xóa hết các kí tự đang nhập ở tất cả các trường
         txtNgayBienSoan.setText("");
         txtTacGia.setText("");
         txtTenGiaoTrinh.setText("");
         txtTimKiem.setText("");
         rdChuaXuatBan.setSelected(true);
         txtTenGiaoTrinh.requestFocus();
-        
     }//GEN-LAST:event_btnLamMoiActionPerformed
     
-    // Hàm trả về giá trị của radio button
+    // Hàm trả về chuỗi của radio button trạng thái xuất bản
     private String getSelectedButton (){
         if (rdChuaXuatBan.isSelected()){
             return "Chua xuat ban";
@@ -329,7 +333,9 @@ public class QLXBGT extends javax.swing.JFrame {
     }
     
     private void btnThemMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemMoiActionPerformed
+        //Tạo biến đếm
         int count=0;
+        //Nếu các trường chưa được nhập thì đưa ra thông báo
         if(txtNgayBienSoan.getText().equals("") || txtTacGia.getText().equals("") || 
                 txtTenGiaoTrinh.getText().equals("") ){
             JOptionPane.showMessageDialog(this, "Vui long nhap day du thong tin");
@@ -337,10 +343,11 @@ public class QLXBGT extends javax.swing.JFrame {
         }
         else{
             String Stt = Integer.toString(x);
+            //Tăng STT lên 1
             x++;
             String data[] = { Stt, txtTenGiaoTrinh.getText(), txtTacGia.getText(), txtNgayBienSoan.getText(), getSelectedButton()};
             DefaultTableModel tblModel = (DefaultTableModel)jTable1.getModel();
-            //Them string vao table
+            //Kiểm tra xem giáo trình đã tồn tại hay chưa
             for (int i = 0; i < tblModel.getRowCount(); i++){
                 if (txtTenGiaoTrinh.getText().equals(tblModel.getValueAt(i, 1))){
                     JOptionPane.showMessageDialog(this, "Giao trinh da ton tai");
@@ -348,6 +355,7 @@ public class QLXBGT extends javax.swing.JFrame {
                     break;
                 }
             }
+            //Nếu chưa thì thêm dữ liệu vào bảng
             if (count==0){
             tblModel.addRow(data);
             txtNgayBienSoan.setText("");
@@ -360,21 +368,23 @@ public class QLXBGT extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnThemMoiActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnXuatBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatBanActionPerformed
         DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+        //Duyệt bảng từ đầu đết cuối, sửa hết giá trị thành đã xuất bản
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             tableModel.setValueAt("Da xuat ban",  i, 4); 
         }       // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnXuatBanActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-  
+
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        //Lấy dữ liêu của dòng đã chọn
         String tenGiaoTrinh = model.getValueAt(jTable1.getSelectedRow(), 1).toString();
         String tacGia = model.getValueAt(jTable1.getSelectedRow(), 2).toString();
         String ngayBienSoan = model.getValueAt(jTable1.getSelectedRow(), 3).toString();
         String trangThaiXuatBan = model.getValueAt(jTable1.getSelectedRow(), 4).toString();
-
+        //gán giá trị đó lên textfield
         txtTenGiaoTrinh.setText(tenGiaoTrinh);
         txtTacGia.setText(tacGia);
         txtNgayBienSoan.setText(ngayBienSoan);
@@ -390,11 +400,12 @@ public class QLXBGT extends javax.swing.JFrame {
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
         DefaultTableModel tblModel = (DefaultTableModel) jTable1.getModel();
         int count = 0;
-        // neu 1 hang duoc chon thi se duoc update
+        // neu 1 hang duoc chon thi ...
         if (jTable1.getSelectedRowCount()==1 ){
             String tenGiaoTrinh = txtTenGiaoTrinh.getText();
             String tacGia = txtTacGia.getText();
             String ngayBienSoan = txtNgayBienSoan.getText();
+            //Kiểm tra xem tên giáo trình đã tồn tại chưua
             for (int i = 0; i < tblModel.getRowCount(); i++){
                 if (txtTenGiaoTrinh.getText().equals(tblModel.getValueAt(i, 1))){
                     JOptionPane.showMessageDialog(this, "Giao trinh da ton tai");
@@ -402,17 +413,19 @@ public class QLXBGT extends javax.swing.JFrame {
                     break;
                 }
             }
+            //Nếu chưa giáo trình nào tồn tại thì cập nhật lại dòng
             if (count == 0){
-            //cap nhat laij bang
             tblModel.setValueAt(tenGiaoTrinh, jTable1.getSelectedRow(), 1);
             tblModel.setValueAt(tacGia, jTable1.getSelectedRow(), 2);
             tblModel.setValueAt(ngayBienSoan, jTable1.getSelectedRow(), 3);
             tblModel.setValueAt(getSelectedButton(), jTable1.getSelectedRow(), 4);
             JOptionPane.showMessageDialog(this , "Cap nhat thanh cong");
         } else{
+                //nếu chưa chọn dòng nào thì đưa ra thông báo
             if (jTable1.getRowCount()==0){
                 JOptionPane.showMessageDialog(this , "Bang rong");
             }
+            //nếu chọn nhiều dòng thì đưa ra thông báo
             else{
                 JOptionPane.showMessageDialog(this, "Vui long chon 1 hang");
                 }
@@ -493,8 +506,8 @@ public class QLXBGT extends javax.swing.JFrame {
     private javax.swing.JButton btnThemMoi;
     private javax.swing.JButton btnTim;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXuatBan;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
